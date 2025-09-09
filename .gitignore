@@ -1,4 +1,14 @@
 *.pyc
 _pycache_/
 db.sqlite3
+# macOS system files
+.DS_Store
+
+# Python
+__psycache__/
+*.pyc
+
+# Virtual environments
+venv/
+myenv/
 
