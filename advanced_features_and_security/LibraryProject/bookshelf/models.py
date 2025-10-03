@@ -35,3 +35,19 @@ class CustomUser(AbstractUser):
 
     def __str__(self):
         return self.username
+
+# --- Model secured by custom permissions ---
+class Book(models.Model):
+    title = models.CharField(max_length=255)
+    author = models.CharField(max_length=255, blank=True)
+
+    def __str__(self):
+        return self.title
+
+    class Meta:
+        permissions = (
+            ('can_view', 'Can view book'),
+            ('can_create', 'Can create book'),
+            ('can_edit', 'Can edit book'),
+            ('can_delete', 'Can delete book'),
+        )
