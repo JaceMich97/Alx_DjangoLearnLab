@@ -17,3 +17,9 @@ def edit_book(request, pk):
 @permission_required('bookshelf.can_delete', raise_exception=True)
 def delete_book(request, pk):
     return HttpResponse(f"can_delete OK: {pk}")
+
+
+@permission_required('bookshelf.can_view', raise_exception=True)
+def book_list(request):
+    titles = ", ".join(Book.objects.values_list('title', flat=True))
+    return HttpResponse(f"book_list: {titles if titles else 'no books'}")
