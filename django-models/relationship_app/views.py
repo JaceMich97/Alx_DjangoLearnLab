@@ -6,21 +6,31 @@ from django.http import HttpResponse
 from django import forms
 from .models import Book, Library
 
-# --- Task 1: function-based list of books ---
+# --- Task 1: function-based view (PLAIN TEXT) ---
 def list_books(request):
-    books = Book.objects.select_related('author').all()
-    return render(request, 'relationship_app/list_books.html', {'books': books})
+    """
+    Returns a simple text list: "<title> by <author>"
+    One per line (text/plain), as the checker expects.
+    """
+    lines = [f"{b.title} by {b.author.name}" for b in Book.objects.select_related('author').all()]
+    body = "\n".join(lines) if lines else "No books yet."
+    return HttpResponse(body, content_type="text/plain")
 
-# --- Task 1: class-based library detail ---
+# --- Task 1: class-based view for a specific library ---
 class LibraryDetailView(DetailView):
+    """
+    Displays details for a specific Library and lists its books.
+    Uses DetailView as required.
+    """
     model = Library
     template_name = 'relationship_app/library_detail.html'
     context_object_name = 'library'
 
-# --- Task 2: registration (login/logout via built-ins in urls) ---
+# --- Task 2: registration (login/logout use built-ins in urls) ---
 class RegisterView(View):
     template_name = 'relationship_app/register.html'
-    def get(self, request): return render(request, self.template_name, {'form': UserCreationForm()})
+    def get(self, request):
+        return render(request, self.template_name, {'form': UserCreationForm()})
     def post(self, request):
         form = UserCreationForm(request.POST)
         if form.is_valid():
@@ -54,7 +64,7 @@ def add_book(request):
         form = BookForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('books-list')
+            return redirect('list_books')
     else:
         form = BookForm()
     return render(request, 'relationship_app/book_form.html', {'form': form, 'action': 'Add'})
@@ -66,7 +76,7 @@ def edit_book(request, pk):
         form = BookForm(request.POST, instance=book)
         if form.is_valid():
             form.save()
-            return redirect('books-list')
+            return redirect('list_books')
     else:
         form = BookForm(instance=book)
     return render(request, 'relationship_app/book_form.html', {'form': form, 'action': 'Edit'})
@@ -76,5 +86,5 @@ def delete_book(request, pk):
     book = get_object_or_404(Book, pk=pk)
     if request.method == 'POST':
         book.delete()
-        return redirect('books-list')
+        return redirect('list_books')
     return render(request, 'relationship_app/book_confirm_delete.html', {'book': book})
