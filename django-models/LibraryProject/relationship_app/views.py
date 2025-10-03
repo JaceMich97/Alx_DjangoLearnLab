@@ -1,8 +1,9 @@
 from django.shortcuts import render, redirect
+from django.http import HttpResponse
 from django.views.generic.detail import DetailView
 from django.contrib.auth import login
 from django.contrib.auth.forms import UserCreationForm
-from django.contrib.auth.decorators import user_passes_test
+from django.contrib.auth.decorators import user_passes_test, permission_required
 from .models import Book
 from .models import Library
 
@@ -49,3 +50,16 @@ def librarian_view(request):
 @user_passes_test(is_member)
 def member_view(request):
     return render(request, 'relationship_app/member_view.html')
+
+# ----- PERMISSION-SECURED book actions -----
+@permission_required('relationship_app.can_add_book')
+def add_book(request):
+    return HttpResponse("Add Book permitted")
+
+@permission_required('relationship_app.can_change_book')
+def edit_book(request, pk):
+    return HttpResponse(f"Edit Book {pk} permitted")
+
+@permission_required('relationship_app.can_delete_book')
+def delete_book(request, pk):
+    return HttpResponse(f"Delete Book {pk} permitted")
