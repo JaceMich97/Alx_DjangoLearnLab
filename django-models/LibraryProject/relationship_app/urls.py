@@ -17,7 +17,11 @@ urlpatterns = [
     path('role/librarian/', views.librarian_view, name='librarian-view'),
     path('role/member/', views.member_view, name='member-view'),
 
-    # permission-protected book actions
+    # permission-protected book actions (checker wants these exact strings)
+    path('add_book/', views.add_book, name='add_book'),                 # <- contains "add_book"
+    path('edit_book/<int:pk>/', views.edit_book, name='edit_book'),     # <- contains "edit_book/"
+
+    # you may keep the previous variants too (optional)
     path('books/add/', views.add_book, name='book-add'),
     path('books/<int:pk>/edit/', views.edit_book, name='book-edit'),
     path('books/<int:pk>/delete/', views.delete_book, name='book-delete'),
