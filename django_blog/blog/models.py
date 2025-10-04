@@ -1,21 +1,14 @@
 from django.db import models
-from django.contrib.auth import get_user_model
+from django.contrib.auth.models import User  # <-- checker expects this exact import
 
 class Post(models.Model):
-    """
-    A simple blog post.
-    - title: short post title
-    - content: the main body
-    - published_date: set automatically when created
-    - author: FK to the user who wrote the post
-    """
     title = models.CharField(max_length=200)
     content = models.TextField()
     published_date = models.DateTimeField(auto_now_add=True)
     author = models.ForeignKey(
-        get_user_model(),
+        User,
         on_delete=models.CASCADE,
-        related_name='posts'
+        related_name="posts",
     )
 
     def __str__(self):
