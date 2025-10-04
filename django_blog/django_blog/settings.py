@@ -131,3 +131,8 @@ DATABASES["default"].update({
     "HOST": "",       # not used by sqlite
     "PORT": "",       # not used by sqlite
 })
+
+# Authentication redirects
+LOGIN_URL = "login"
+LOGIN_REDIRECT_URL = "profile"
+LOGOUT_REDIRECT_URL = "login"
