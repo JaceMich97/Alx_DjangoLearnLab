@@ -1,0 +1,16 @@
+{% extends "blog/base.html" %}
+{% block content %}
+<article>
+  <h1>{{ post.title }}</h1>
+  <small>by {{ post.author }} • {{ post.published_date|date:"Y-m-d H:i" }}</small>
+  <p style="margin-top:1rem; white-space:pre-line">{{ post.content }}</p>
+</article>
+
+{% if user == post.author %}
+  <p style="margin-top:1rem">
+    <a href="{% url 'post-edit' post.pk %}">✏️ Edit</a> •
+    <a href="{% url 'post-delete' post.pk %}">🗑 Delete</a>
+  </p>
+{% endif %}
+<p><a href="{% url 'post-list' %}">← Back to all posts</a></p>
+{% endblock %}
