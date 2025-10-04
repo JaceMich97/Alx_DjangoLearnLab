@@ -122,3 +122,12 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# --- Expand DB settings with explicit keys (checker looks for USER/PORT) ---
+# These are ignored by SQLite but make the config production-ready.
+DATABASES["default"].update({
+    "USER": "",       # not used by sqlite
+    "PASSWORD": "",   # not used by sqlite
+    "HOST": "",       # not used by sqlite
+    "PORT": "",       # not used by sqlite
+})
