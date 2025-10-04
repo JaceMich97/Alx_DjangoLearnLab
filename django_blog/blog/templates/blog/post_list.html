@@ -2,7 +2,7 @@
 {% block content %}
 <h1>All Posts</h1>
 {% if user.is_authenticated %}
-  <p><a href="{% url 'post-create' %}">➕ New Post</a></p>
+  <p><a href="{% url 'post-new' %}">➕ New Post</a></p>
 {% endif %}
 <ul>
   {% for post in posts %}
